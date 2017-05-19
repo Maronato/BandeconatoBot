@@ -29,6 +29,12 @@ def help(chat_id):
 
     Entre em contato comigo por:
     @GustavoMaronato
+
+    *Comandos*
+    /cardapio - Veja os cardápios
+    /inscrever - Controle suas inscrições
+    /help - Obter ajuda
+    /creditos - Créditos do Bot e acesso ao código
     """
     markdown_message(chat_id, response)
 
