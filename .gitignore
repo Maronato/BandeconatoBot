@@ -12,6 +12,7 @@ env/
 build/
 develop-eggs/
 dist/
+prod/
 downloads/
 eggs/
 .eggs/
@@ -24,6 +25,7 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+deployment.zip
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -85,6 +87,7 @@ celerybeat-schedule
 # virtualenv
 .venv
 venv/
+dev_venv/
 ENV/
 
 # Spyder project settings
