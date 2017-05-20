@@ -3,7 +3,6 @@ from unicampbot.commands import commands
 from unicampbot.menu.keyboards import day_keyboard, menu_keyboard, menu_view
 from unicampbot.subscriptions.send import SubscriptionSender
 from unicampbot.subscriptions.subscription import Subscription
-from unicampbot.communication.basic import simple_message
 
 
 def receiver(data):
@@ -47,43 +46,43 @@ def _message(update_id, msg):
 
         # Private chat commands
         if chat_type == 'private':
-            if text.strip() == '/start':
+            if text.strip().lower() in ['/start', '@bandeconatobot']:
                 commands.start(chat_id)
 
-            elif text.strip() == '/help':
+            elif text.strip().lower() in ['/ajuda', '/ajuda@bandeconatobot', 'ajuda', '/help', 'help']:
                 commands.help(chat_id)
 
-            elif text.strip() == '/creditos':
+            elif text.strip().lower() in ['/creditos', 'créditos', 'creditos', '/creditos@bandeconatobot']:
                 commands.creditos(chat_id)
 
-            elif text.strip() in ['cardapio', '/cardapio']:
+            elif text.strip().lower() in ['cardapio', 'cardápio', '/cardapio', '/cardapio@bandeconatobot']:
                 commands.cardapio(chat_id)
 
-            elif text.strip() in ['inscrever', '/inscrever']:
+            elif text.strip().lower() in ['inscrever', 'inscrições', '/inscrever', '/inscrever@bandeconatobot']:
                 commands.inscrever(chat_id)
 
             else:
-                simple_message(chat_id, "Não reconheço esse comando :(\n\n/help - Lista de comandos")
+                commands.unknown(chat_id)
 
         # Group chat commands
         if chat_type == 'group':
-            if text.strip() in ['/start', '@BandeconatoBot']:
-                commands.start(chat_id)
+            if text.strip().lower() in ['/start', '@BandeconatoBot']:
+                commands.start(chat_id, True)
 
-            elif text.strip() in ['/help', '/help@BandeconatoBot']:
-                commands.help(chat_id)
+            elif text.strip().lower() in ['/ajuda', '/ajuda@bandeconatobot', 'ajuda', '/help', 'help']:
+                commands.help(chat_id, True)
 
-            elif text.strip() in ['/creditos', '/creditos@BandeconatoBot']:
-                commands.creditos(chat_id)
+            elif text.strip().lower() in ['/creditos', 'créditos', 'creditos', '/creditos@bandeconatobot']:
+                commands.creditos(chat_id, True)
 
-            elif text.strip() in ['/cardapio', '/cardapio@BandeconatoBot']:
+            elif text.strip().lower() in ['cardapio', 'cardápio', '/cardapio', '/cardapio@bandeconatobot']:
                 commands.cardapio(chat_id)
 
-            elif text.strip() in ['/inscrever', '/inscrever@BandeconatoBot']:
+            elif text.strip().lower() in ['inscrever', 'inscrições', '/inscrever', '/inscrever@bandeconatobot']:
                 commands.inscrever(chat_id)
 
             else:
-                simple_message(chat_id, "Não reconheço esse comando :(\n\n/help - Lista de comandos")
+                commands.unknown(chat_id, True)
 
 
 def _edited_message(update_id, msg):
@@ -143,8 +142,15 @@ def _callback_query(update_id, callback_query):
         changed_sub = query_data.split('.')[1]
         # Get the chat id
         chat_id = callback_query['message']['chat']['id']
+        # Get some extra info
+        extra_info = {}
+        extra_info['chat_type'] = {'S': str(callback_query['message']['chat']['type'])}
+        try:
+            extra_info['username'] = {'S': str(callback_query['message']['chat']['username'])}
+        except KeyError:
+            extra_info['group_title'] = {'S': str(callback_query['message']['chat']['title'])}
         # Update subscription and respond to query
-        Subscription(chat_id, query_id, message_id).update_subscription(changed_sub).interact()
+        Subscription(chat_id, query_id, message_id, extra_info=extra_info).update_subscription(changed_sub).interact()
 
 
 def send_subscriptions(sub):
