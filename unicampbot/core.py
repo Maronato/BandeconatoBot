@@ -143,12 +143,22 @@ def _callback_query(update_id, callback_query):
         # Get the chat id
         chat_id = callback_query['message']['chat']['id']
         # Get some extra info
+        chat_type = str(callback_query['message']['chat']['type'])
         extra_info = {}
-        extra_info['chat_type'] = {'S': str(callback_query['message']['chat']['type'])}
-        try:
-            extra_info['username'] = {'S': str(callback_query['message']['chat']['username'])}
-        except KeyError:
-            extra_info['group_title'] = {'S': str(callback_query['message']['chat']['title'])}
+        extra_info['chat_type'] = {'S': chat_type}
+        if chat_type == 'private':
+            extra_info['first_name'] = {'S': str(callback_query['message']['chat']['first_name'])}
+            extra_info['last_name'] = {'S': str(callback_query['message']['chat']['last_name'])}
+            try:
+                extra_info['username'] = {'S': str(callback_query['message']['chat']['username'])}
+            except KeyError as e:
+                extra_info['username'] = {'S': "unavailable"}
+        else:
+            try:
+                extra_info['group_title'] = {'S': str(callback_query['message']['chat']['title'])}
+            except KeyError:
+                extra_info['group_title'] = {'S': "unavailable"}
+
         # Update subscription and respond to query
         Subscription(chat_id, query_id, message_id, extra_info=extra_info).update_subscription(changed_sub).interact()
 
