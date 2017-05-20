@@ -13,8 +13,8 @@ def get_subscription(chat_id):
     return sub
 
 
-def set_subscription(chat_id, sub):
-    row = {'chat_id': {'S': str(chat_id)}, 'sub': {'S': json.dumps(sub)}}
+def set_subscription(chat_id, sub, extra={'S': ""}):
+    row = {'chat_id': {'S': str(chat_id)}, 'sub': {'S': json.dumps(sub)}, "extra": {"M": extra}}
     return setkey(chat_id, row)
 
 
