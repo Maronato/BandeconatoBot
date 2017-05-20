@@ -147,8 +147,16 @@ def _callback_query(update_id, callback_query):
         extra_info = {}
         extra_info['chat_type'] = {'S': chat_type}
         if chat_type == 'private':
-            extra_info['first_name'] = {'S': str(callback_query['message']['chat']['first_name'])}
-            extra_info['last_name'] = {'S': str(callback_query['message']['chat']['last_name'])}
+            try:
+                extra_info['first_name'] = {'S': str(callback_query['message']['chat']['first_name'])}
+            except KeyError:
+                extra_info['first_name'] = {'S': "unavailable"}
+
+            try:
+                extra_info['last_name'] = {'S': str(callback_query['message']['chat']['last_name'])}
+            except KeyError as e:
+                extra_info['last_name'] = {'S': "unavailable"}
+
             try:
                 extra_info['username'] = {'S': str(callback_query['message']['chat']['username'])}
             except KeyError as e:
