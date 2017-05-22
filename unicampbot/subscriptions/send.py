@@ -1,6 +1,6 @@
 from unicampbot.database.subscriptions_api import get_all_subscriptions, get_subscription
 from unicampbot.menu.cardapio import Cardapio
-from unicampbot.communication.basic import markdown_message, custom_keyboard
+from unicampbot.communication.basic import markdown_message
 
 import os
 
@@ -45,4 +45,4 @@ class SubscriptionSender:
         for chat in chats:
             for menu in self.menus:
                 if chat['sub'].get(menu, False):
-                    markdown_message(chat['id'], mensagens[menu], reply_markup=custom_keyboard())
+                    markdown_message(chat['id'], mensagens[menu])
