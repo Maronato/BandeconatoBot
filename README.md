@@ -8,3 +8,7 @@ This bot is supposed to be hosted in an AWS's lambda function and receive reques
 
 # Does it work?
 Yep, check it out [here](https://telegram.me/BandeconatoBot)
+
+
+# TODO
+- Login and cache(?) passwords for [card balance report](https://www1.sistemas.unicamp.br/SmartCardWeb/consultaSaldo.do)
