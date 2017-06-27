@@ -35,7 +35,7 @@ class Cardapio:
         except requests.HTTPError:
             self.soup = "_O servidor da Unicamp está sendo malcriado._"
         except LookupError:
-            self.soup = "*Esse cardápio não existe.*\n_Será que é fim de semana?_"
+            self.soup = "*Esse cardápio não existe.*\n_Será que não tem bandeco?_"
         except requests.exceptions.ConnectionError:
             self.soup = "_Não foi possível estabelecer uma conexão com o servidor da Unicamp._"
         except Exception as e:
