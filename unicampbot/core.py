@@ -168,5 +168,5 @@ def _callback_query(update_id, callback_query):
         Subscription(chat_id, query_id, message_id, extra_info=extra_info).update_subscription(changed_sub).interact()
 
 
-def send_subscriptions(**sub):
+def send_subscriptions(sub):
     SubscriptionSender(**sub).send()
