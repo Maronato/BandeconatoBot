@@ -125,15 +125,12 @@ def _callback_query(update_id, callback_query):
     # Navigate the callback if it came from the menu
     if query_data.split('.')[0] == 'menu':
 
-        # Pass arguments to callback response constructors
-        if len(query_data.split('.')) == 1:
-            day_keyboard(message_id, query_id)
-
-        elif len(query_data.split('.')) == 2:
-            menu_keyboard(query_data.split('.')[1], message_id, query_id)
-
-        elif len(query_data.split('.')) == 3:
-            menu_view(query_data.split('.')[1], query_data.split('.')[2], message_id, query_id)
+        options = {
+            "1": "day_keyboard(message_id, query_id)",
+            "2": "menu_keyboard(query_data.split('.')[1], message_id, query_id)",
+            "3": "menu_view(query_data.split('.')[1], query_data.split('.')[2], message_id, query_id)"
+        }
+        eval(options.get(str(len(query_data.split('.'))), "None"))
 
     # Navigate the callback if it came from the subscription command
     if query_data.split('.')[0] == 'sub':
