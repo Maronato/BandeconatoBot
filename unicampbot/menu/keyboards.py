@@ -1,6 +1,8 @@
 from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
+from bandecoapi.api.api import get_menu
+
 from unicampbot.communication.basic import edit_message, answer_callback_query, inline_keyboard_message
-from .cardapio import Cardapio
+from .quotes import quote_choice
 
 
 day_ref = {
@@ -61,10 +63,14 @@ def menu_view(day, option, message_id, query_id):
         'jv': 'vegdinner'
     }
 
-    cardapio = Cardapio(int(day))
+    menu = get_menu(menus=[menu_options[option]], days_delta=int(day), hours_delta=-3)
 
-    menu = getattr(cardapio, menu_options[option])
-    quote = cardapio.quote
+    if menu.get("error", False):
+        menu = menu["error"]
+        quote = ""
+    else:
+        menu = menu["menu"][menu_options[option]]
+        quote = quote_choice()
 
     response = '\n\n'.join(["*" + menu_trans_options[option] + ' de ' + day_ref[str(day)] + '*', menu, quote])
 
