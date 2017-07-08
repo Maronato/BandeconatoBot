@@ -18,10 +18,18 @@ if [[ "$OSTYPE" == "linux-gnu" || "$OSTYPE" == "darwin"* ]]; then
     source venv/bin/activate
     pip -q install -r requirements.txt
     deactivate
+    echo "Installing dev requirements"
+    source venv_dev/bin/activate
+    pip -q install -r dev_requirements.txt
+    deactivate
 elif [[ "$OSTYPE" == "cygwin" ||  "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
     echo "Installing requirements"
     venv\Scripts\activate.bat
     pip -q install -r requirements.txt
+    deactivate
+    echo "Installing dev requirements"
+    venv_dev\Scripts\activate.bat
+    pip -q install -r dev_requirements.txt
     deactivate
 else
     echo -e "${RED}Warning: OS unsupported!"
