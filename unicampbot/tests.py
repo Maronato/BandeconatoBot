@@ -46,5 +46,5 @@ def reset_webhook():
 def test_notification(menu_type, days_delta=0, hours_delta=-3):
     bot.deleteWebhook()
     args = {"menu": menu_type, "debug": True, "hours_delta": hours_delta, "debug_days_delta": days_delta}
-    send_subscriptions(**args)
+    send_subscriptions(args)
     reset_webhook()

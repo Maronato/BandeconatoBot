@@ -1,6 +1,7 @@
 from bandecoapi.api.api import get_menu
+from telepot.exception import BotWasBlockedError
 
-from unicampbot.database.subscriptions_api import get_all_subscriptions, get_subscription
+from unicampbot.database.subscriptions_api import get_all_subscriptions, get_subscription, delete_chat
 from unicampbot.communication.basic import markdown_message
 
 import os
@@ -33,10 +34,10 @@ class SubscriptionSender:
     }
 
     def send(self):
+        chats = get_all_subscriptions()
         if self.debug:
-            chats = [{'sub': get_subscription(os.environ.get("DEV_CHAT_ID")), 'id': os.environ.get("DEV_CHAT_ID")}]
-        else:
-            chats = get_all_subscriptions()
+            chats = list(filter(lambda x: str(x['id']) == str(os.environ.get("DEV_CHAT_ID")), chats))
+
         mensagens = {}
 
         menus = get_menu(menus=self.menus, hours_delta=self.hours_delta, days_delta=self.debug_days_delta)
@@ -53,4 +54,25 @@ class SubscriptionSender:
         for chat in chats:
             for menu in self.menus:
                 if chat['sub'].get(menu, False):
-                    markdown_message(chat['id'], mensagens[menu])
+                    # Try to send
+                    try:
+                        markdown_message(chat['id'], mensagens[menu])
+                    except BotWasBlockedError as e:
+                        try:
+                            if chat['extra']['chat_type']['S'] == 'private':
+                                username = chat['extra']['username']['S']
+                                name = chat['extra']['first_name']['S'] + " " + chat['extra']['last_name']['S']
+                                info = "User {}({}) with ID {} blocked the bot and is being removed from the table".format(name, username, chat['id'])
+                            elif chat['extra']['chat_type']['S'] == 'group':
+                                group_name = chat['extra']['first_name']['S']
+                                info = "Group {} with ID {} blocked the bot and is being removed from the table".format(group_name, chat['id'])
+                        except KeyError:
+                            info = "Unknown with ID {} blocked the bot and is being removed from the table".format(chat['id'])
+
+                        # Log error
+                        print("EXCEPTION: ", info)
+                        delete_chat(chat['id'])
+                    except Exception as e:
+
+                        # Log error
+                        print("EXCEPTION: An error has occured when sending sub notification to chat ID {}:\n{}".format(chat['id'], e))
