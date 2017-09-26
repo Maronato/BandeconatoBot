@@ -5,21 +5,21 @@ RED='\033[0;31m'
 echo "Initializing"
 
 
-if [[ -d venv ]]; then
-    echo "Checking venv"
-else
-    echo -e "${RED}Warning: Please create a virtual environment named \"venv\"!"
-    exit 1
-fi
+# if [[ -d venv ]]; then
+#     echo "Checking venv"
+# else
+#     echo -e "${RED}Warning: Please create a virtual environment named \"venv\"!"
+#     exit 1
+# fi
 
 echo "Checking OS"
 if [[ "$OSTYPE" == "linux-gnu" || "$OSTYPE" == "darwin"* ]]; then
     echo "Installing requirements"
-    source venv/bin/activate
+    source avenv
     pip -q install --upgrade -r requirements.txt
     deactivate
     echo "Installing dev requirements"
-    source venv_dev/bin/activate
+    source avenv venv_dev
     pip -q install --upgrade -r dev_requirements.txt
     deactivate
 elif [[ "$OSTYPE" == "cygwin" ||  "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then

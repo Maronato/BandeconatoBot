@@ -36,7 +36,7 @@ def custom_keyboard():
         keyboard=[
             [KeyboardButton(text="Cardápio")],
             [KeyboardButton(text="Inscrições")],
-            [KeyboardButton(text="Ajuda"), KeyboardButton(text="Créditos")]
+            [KeyboardButton(text="Ajuda"), KeyboardButton(text="Código")]
         ]
     )
     return reply_markup

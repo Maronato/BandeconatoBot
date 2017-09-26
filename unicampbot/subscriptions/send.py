@@ -1,7 +1,7 @@
-from bandecoapi.api.api import get_menu
+from bandecoapi.api import get_menu
 from telepot.exception import BotWasBlockedError
 
-from unicampbot.database.subscriptions_api import get_all_subscriptions, get_subscription, delete_chat
+from unicampbot.database.subscriptions_api import get_all_subscriptions, delete_chat
 from unicampbot.communication.basic import markdown_message
 
 import os
@@ -34,14 +34,17 @@ class SubscriptionSender:
     }
 
     def send(self):
+        print("Sending subs")
         chats = get_all_subscriptions()
         if self.debug:
             chats = list(filter(lambda x: str(x['id']) == str(os.environ.get("DEV_CHAT_ID")), chats))
 
+        print(len(chats), "chats selected")
         mensagens = {}
 
         menus = get_menu(menus=self.menus, hours_delta=self.hours_delta, days_delta=self.debug_days_delta)
 
+        print("Building message")
         if menus.get("error"):
             # TODO report error here
             print("ERROR: ", menus.get("error"))
@@ -51,12 +54,15 @@ class SubscriptionSender:
             msg += menu
             mensagens[key] = msg
 
-        for chat in chats:
+        print("Sending subs")
+        for k, chat in enumerate(chats):
+            print("Sending sub", k)
             for menu in self.menus:
                 if chat['sub'].get(menu, False):
                     # Try to send
                     try:
                         markdown_message(chat['id'], mensagens[menu])
+                        print("Sub '", menu, "' sent to user", k)
                     except BotWasBlockedError as e:
                         try:
                             if chat['extra']['chat_type']['S'] == 'private':
@@ -76,3 +82,5 @@ class SubscriptionSender:
 
                         # Log error
                         print("EXCEPTION: An error has occured when sending sub notification to chat ID {}:\n{}".format(chat['id'], e))
+                else:
+                    print("User", k, "not subscribed to", menu)

@@ -16,7 +16,7 @@ _Seus problemas acabaram_
 /cardapio - Veja os cardápios
 /inscrever - Controle suas inscrições
 /ajuda - Obter ajuda
-/creditos - Créditos do Bot e acesso ao código
+/codigo - Código do bot
     """
     markdown_message(chat_id, response, reply_markup=keyboard(group))
 
@@ -30,7 +30,7 @@ A lista de comandos disponíveis é:
 /cardapio - Veja os cardápios
 /inscrever - Controle suas inscrições
 /ajuda - Obter ajuda
-/creditos - Créditos do Bot e acesso ao código
+/codigo - Código do bot
 
 Se precisar de suporte, entre em contato com o desenvolvedor:
 @GustavoMaronato
@@ -38,15 +38,15 @@ Se precisar de suporte, entre em contato com o desenvolvedor:
     markdown_message(chat_id, response, reply_markup=keyboard(group))
 
 
-def creditos(chat_id, group=False):
+def codigo(chat_id, group=False):
     response = """
-*Créditos*
+*Código*
 
-Esse bot foi feito por
-@GustavoMaronato
-
-e todo o código fonte dele pode ser encontrado aqui:
+Todo o código fonte dele pode ser encontrado aqui:
 https://github.com/Maronato/BandeconatoBot
+
+Esse bot usa essa API para coletar os cardápios:
+https://github.com/Maronato/BandecoAPI
     """
     markdown_message(chat_id, response, reply_markup=keyboard(group))
 

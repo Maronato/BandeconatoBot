@@ -1,5 +1,5 @@
 from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
-from bandecoapi.api.api import get_menu
+from bandecoapi.api import get_menu
 
 from unicampbot.communication.basic import edit_message, answer_callback_query, inline_keyboard_message
 from .quotes import quote_choice

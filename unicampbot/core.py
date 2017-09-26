@@ -1,7 +1,7 @@
 import telepot
 from unicampbot.commands import commands
-from unicampbot.menu.keyboards import day_keyboard, menu_keyboard, menu_view
 from unicampbot.subscriptions.send import SubscriptionSender
+from unicampbot.menu.keyboards import day_keyboard, menu_keyboard, menu_view
 from unicampbot.subscriptions.subscription import Subscription
 
 
@@ -52,8 +52,8 @@ def _message(update_id, msg):
             elif text.strip().lower() in ['/ajuda', '/ajuda@bandeconatobot', 'ajuda', '/help', 'help']:
                 commands.help(chat_id)
 
-            elif text.strip().lower() in ['/creditos', 'créditos', 'creditos', '/creditos@bandeconatobot']:
-                commands.creditos(chat_id)
+            elif text.strip().lower() in ['/codigo', 'código', 'codigo', '/codigo@bandeconatobot']:
+                commands.codigo(chat_id)
 
             elif text.strip().lower() in ['cardapio', 'cardápio', '/cardapio', '/cardapio@bandeconatobot']:
                 commands.cardapio(chat_id)
@@ -72,8 +72,8 @@ def _message(update_id, msg):
             elif text.strip().lower() in ['/ajuda', '/ajuda@bandeconatobot', 'ajuda', '/help', 'help']:
                 commands.help(chat_id, True)
 
-            elif text.strip().lower() in ['/creditos', 'créditos', 'creditos', '/creditos@bandeconatobot']:
-                commands.creditos(chat_id, True)
+            elif text.strip().lower() in ['/codigo', 'código', 'codigo', '/codigo@bandeconatobot']:
+                commands.codigo(chat_id, True)
 
             elif text.strip().lower() in ['cardapio', 'cardápio', '/cardapio', '/cardapio@bandeconatobot']:
                 commands.cardapio(chat_id)
