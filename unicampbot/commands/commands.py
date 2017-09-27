@@ -33,7 +33,7 @@ A lista de comandos disponíveis é:
 /codigo - Código do bot
 
 Se precisar de suporte, entre em contato com o desenvolvedor:
-@GustavoMaronato
+@Maronato
     """
     markdown_message(chat_id, response, reply_markup=keyboard(group))
 
